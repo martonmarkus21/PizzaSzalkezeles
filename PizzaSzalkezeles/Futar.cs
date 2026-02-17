@@ -20,12 +20,22 @@ namespace PizzaSzalkezeles
 		{
 			while (true)
 			{
-				Pizza p = kemence.KiveszPizza();
+				Rendeles r = kemence.KiveszRendeles();
 
-				Thread.Sleep(p.Meret * 100);
+				Thread.Sleep(r.Pizza.Meret * 150);
 
-				Console.WriteLine($"Futár szállította: {p}");
+				bool fizetett = r.Megrendelo.Fizet(r.Ar);
+
+				if (fizetett)
+				{
+					Console.WriteLine($"Futár kiszállította: {r}. Fizetve!");
+				}
+				else
+				{
+					Console.WriteLine($"Futár kiszállította: {r}. NINCS ELÉG PÉNZ!");
+				}
 			}
 		}
 	}
+
 }

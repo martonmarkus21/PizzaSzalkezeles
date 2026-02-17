@@ -1,37 +1,42 @@
-﻿using System;
+﻿using PizzaSzalkezeles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 
-namespace PizzaSzalkezeles
+internal class Sef
 {
-	internal class Sef
+	private PizzaKemence kemence;
+	private static Random r = new Random();
+	private static string[] pizzaNevek = { "Margherita", "Sonkás", "Hawaii", "Texas", "Négysajtos" };
+	private static string[] megrendelok = { "János", "Anna", "Péter", "Gyula", "Béla" };
+
+	public Sef(PizzaKemence kemence)
 	{
-		private PizzaKemence kemence;
-		private static Random r = new Random();
-		private static string[] pizzaNevek = { "Margherita", "Sonkás", "Hawaii", "Pepperoni", "Négysajtos" };
+		this.kemence = kemence;
+	}
 
-		public Sef(PizzaKemence kemence)
+	public void Futtat()
+	{
+		while (true)
 		{
-			this.kemence = kemence;
-		}
+			Thread.Sleep(r.Next(4000, 6000));
 
-		public void Futtat()
-		{
-			while (true)
-			{
-				Thread.Sleep(r.Next(2000, 3000));
+			string nev = pizzaNevek[r.Next(pizzaNevek.Length)];
+			int meret = r.Next(20, 41);
+			Pizza p = new Pizza(nev, meret);
 
-				string nev = pizzaNevek[r.Next(pizzaNevek.Length)];
-				int meret = r.Next(20, 41);
+			string mNev = megrendelok[r.Next(megrendelok.Length)];
+			Megrendelo m = new Megrendelo(mNev, r.Next(2000, 5000));
 
-				Pizza p = new Pizza(nev, meret);
-				kemence.FeladPizza(p);
+			int ar = meret * 50;
 
-				Console.WriteLine($"Séf készítette: {p}");
-			}
+			Rendeles rendl = new Rendeles(p, m, ar);
+			kemence.FeladRendeles(rendl);
+
+			Console.WriteLine($"Séf elkészítette a rendelést: {rendl}");
 		}
 	}
 }
